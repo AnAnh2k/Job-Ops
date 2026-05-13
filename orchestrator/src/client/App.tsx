@@ -181,6 +181,10 @@ export const App: React.FC = () => {
                   element={<InProgressBoardPage />}
                 />
                 <Route path="/design-resume" element={<DesignResumePage />} />
+                <Route
+                  path="/design-resume/:section"
+                  element={<DesignResumePage />}
+                />
                 <Route path="/onboarding" element={<OnboardingPage />} />
                 <Route path="/sign-in" element={<SignInPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
