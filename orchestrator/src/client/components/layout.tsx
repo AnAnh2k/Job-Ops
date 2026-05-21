@@ -129,7 +129,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5" />
-                <span className="sr-only">Open navigation menu</span>
+                <span className="sr-only">Mở menu điều hướng</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-64 flex flex-col">
@@ -165,11 +165,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                         className="h-8 w-full justify-start gap-2 px-2 text-xs"
                       >
                         <UserRound className="h-3.5 w-3.5" />
-                        <span>Account</span>
+                        <span>Tài khoản</span>
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="w-56">
-                      <DropdownMenuLabel>Remembered</DropdownMenuLabel>
+                      <DropdownMenuLabel>Đã ghi nhớ</DropdownMenuLabel>
                       {rememberedUsers.length > 0 ? (
                         rememberedUsers.map((user) => (
                           <DropdownMenuItem
@@ -194,7 +194,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                         ))
                       ) : (
                         <DropdownMenuItem disabled>
-                          Sign in once to remember a username here.
+                          Đăng nhập một lần để ghi nhớ tên đăng nhập tại đây.
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuSeparator />
@@ -203,7 +203,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                         className="gap-2"
                       >
                         <LogOut className="h-3.5 w-3.5" />
-                        <span>Sign out</span>
+                        <span>Đăng xuất</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -224,7 +224,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                               <span className="h-2 w-2 shrink-0 cursor-pointer rounded-full bg-emerald-500" />
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Update available</p>
+                              <p>Có bản cập nhật mới</p>
                             </TooltipContent>
                           </Tooltip>
                         )}
@@ -239,7 +239,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
                         }}
                         className="h-7 gap-1.5 px-2 text-xs"
                       >
-                        <span>Documentation</span>
+                        <span>Tài liệu hướng dẫn</span>
                         <ExternalLink className="h-3.5 w-3.5" />
                       </Button>
                     </div>
@@ -437,7 +437,9 @@ export const ScoreMeter: React.FC<ScoreMeterProps> = ({
   showLabel = true,
 }) => {
   if (score == null) {
-    return <span className="text-xs text-muted-foreground">Not scored</span>;
+    return (
+      <span className="text-xs text-muted-foreground">Chưa chấm điểm</span>
+    );
   }
 
   const tokens = getScoreTokens(score);

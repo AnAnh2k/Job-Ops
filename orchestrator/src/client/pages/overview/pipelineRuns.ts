@@ -22,15 +22,15 @@ export function getPipelineRunStatusLabel(
 ): string {
   switch (status) {
     case "running":
-      return "Running";
+      return "Đang chạy";
     case "completed":
-      return "Completed";
+      return "Đã hoàn thành";
     case "failed":
-      return "Failed";
+      return "Thất bại";
     case "cancelled":
-      return "Cancelled";
+      return "Đã hủy";
     case "incomplete":
-      return "Incomplete";
+      return "Chưa hoàn tất";
   }
 }
 

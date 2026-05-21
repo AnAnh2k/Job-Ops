@@ -18,10 +18,10 @@ export type NavLink = {
 };
 
 export const NAV_LINKS: NavLink[] = [
-  { to: "/overview", label: "Overview", icon: Home },
+  { to: "/overview", label: "Tổng quan", icon: Home },
   {
     to: "/jobs/ready",
-    label: "Jobs",
+    label: "Công việc",
     icon: LayoutDashboard,
     activePaths: [
       "/jobs/ready",
@@ -32,26 +32,26 @@ export const NAV_LINKS: NavLink[] = [
   },
   {
     to: "/applications/in-progress",
-    label: "In Progress",
+    label: "Đang ứng tuyển",
     icon: Columns3,
     activePaths: ["/applications/in-progress"],
   },
   {
     to: "/design-resume",
-    label: "Resume Studio",
+    label: "Thiết kế CV",
     icon: FilePenLine,
     activePaths: ["/design-resume"],
   },
-  { to: "/tracking-inbox", label: "Tracking Inbox", icon: Inbox },
+  { to: "/tracking-inbox", label: "Hộp thư theo dõi", icon: Inbox },
   {
     to: "/tracer-links",
-    label: "Tracer Links",
+    label: "Liên kết theo dõi",
     icon: Link2,
     activePaths: ["/tracer-links"],
   },
-  { to: "/visa-sponsors", label: "Visa Sponsors", icon: Shield },
-  { to: "/watchlist", label: "Watchlist", icon: Eye },
-  { to: "/settings", label: "Settings", icon: Settings },
+  { to: "/visa-sponsors", label: "Nhà bảo lãnh Visa", icon: Shield },
+  { to: "/watchlist", label: "Danh sách theo dõi", icon: Eye },
+  { to: "/settings", label: "Cài đặt", icon: Settings },
 ];
 
 export const isNavActive = (

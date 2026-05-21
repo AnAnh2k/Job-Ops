@@ -78,7 +78,7 @@ describe("typst resume renderer", () => {
   });
 
   it("exposes the bundled Typst template", async () => {
-    expect(getTypstTemplatePath()).toContain("typst-themes/classic/main.typ");
+    expect(getTypstTemplatePath().replace(/\\/g, "/")).toContain("typst-themes/classic/main.typ");
     const template = await readTypstTemplate();
     expect(template).toContain("#set page");
     expect(template).toContain("__BODY__");
@@ -95,7 +95,7 @@ describe("typst resume renderer", () => {
       } else {
         expect(manifest.tokens).toBeUndefined();
       }
-      expect(getTypstTemplatePath(theme)).toContain(
+      expect(getTypstTemplatePath(theme).replace(/\\/g, "/")).toContain(
         `typst-themes/${theme}/main.typ`,
       );
     }

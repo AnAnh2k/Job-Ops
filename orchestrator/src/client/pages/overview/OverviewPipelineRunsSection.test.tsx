@@ -134,12 +134,12 @@ describe("OverviewPipelineRunsSection", () => {
 
     renderWithQueryClient(<OverviewPipelineRunsSection />);
 
-    expect(await screen.findByText("Pipeline runs")).toBeInTheDocument();
-    expect(await screen.findByText("Current status")).toBeInTheDocument();
-    expect(screen.getByText("Recent runs")).toBeInTheDocument();
-    expect(screen.getAllByText("Completed").length).toBeGreaterThan(0);
-    expect(screen.getByText("Failed")).toBeInTheDocument();
-    expect(screen.getByText("Incomplete")).toBeInTheDocument();
+    expect(await screen.findByText("Tiến trình chạy Pipeline")).toBeInTheDocument();
+    expect(await screen.findByText("Trạng thái hiện tại")).toBeInTheDocument();
+    expect(screen.getByText("Các lần chạy gần đây")).toBeInTheDocument();
+    expect(screen.getAllByText("Đã hoàn thành").length).toBeGreaterThan(0);
+    expect(screen.getByText("Thất bại")).toBeInTheDocument();
+    expect(screen.getByText("Chưa hoàn tất")).toBeInTheDocument();
     expect(screen.getAllByText("12").length).toBeGreaterThan(0);
     expect(screen.getAllByText("3").length).toBeGreaterThan(0);
 
@@ -148,13 +148,13 @@ describe("OverviewPipelineRunsSection", () => {
     await waitFor(() =>
       expect(api.getPipelineRunInsights).toHaveBeenCalledWith("run-failed"),
     );
-    expect(await screen.findByText("Run details")).toBeInTheDocument();
-    expect(screen.getByText("Saved settings")).toBeInTheDocument();
-    expect(screen.getByText("Requested run")).toBeInTheDocument();
-    expect(screen.getByText("Effective settings")).toBeInTheDocument();
-    expect(screen.getByText("Saved execution summary")).toBeInTheDocument();
-    expect(screen.getByText("What changed")).toBeInTheDocument();
-    expect(screen.getByText("Inferred from timestamps")).toBeInTheDocument();
+    expect(await screen.findByText("Chi tiết lần chạy")).toBeInTheDocument();
+    expect(screen.getByText("Cài đặt đã lưu")).toBeInTheDocument();
+    expect(screen.getByText("Yêu cầu chạy")).toBeInTheDocument();
+    expect(screen.getByText("Cài đặt hiệu dụng")).toBeInTheDocument();
+    expect(screen.getByText("Tóm tắt thực thi đã lưu")).toBeInTheDocument();
+    expect(screen.getByText("Thay đổi")).toBeInTheDocument();
+    expect(screen.getByText("Suy luận từ mốc thời gian")).toBeInTheDocument();
     expect(screen.getByText("Scoring failed")).toBeInTheDocument();
     expect(
       screen.getByText("linkedin: temporary rate limit"),
@@ -208,6 +208,6 @@ describe("OverviewPipelineRunsSection", () => {
     renderWithQueryClient(<OverviewPipelineRunsSection />);
 
     expect(await screen.findByTestId("pipeline-progress")).toBeInTheDocument();
-    expect(screen.getAllByText("Running").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Đang chạy").length).toBeGreaterThan(0);
   });
 });

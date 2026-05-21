@@ -253,7 +253,7 @@ export function useOnboardingFlow() {
             : undefined,
           validate: api.validateRxresume,
           getPrecheckMessage: () =>
-            "v5 API key required. Add a v5 API key, then test again.",
+            "Yêu cầu khóa API v5. Vui lòng thêm khóa API v5 rồi thử lại.",
           getValidationErrorMessage: (error: unknown) =>
             error instanceof Error
               ? error.message
@@ -314,22 +314,22 @@ export function useOnboardingFlow() {
     () => [
       {
         id: "llm",
-        label: "LLM",
-        subtitle: "Provider, credentials, and endpoint",
+        label: "LLM (Trí tuệ nhân tạo)",
+        subtitle: "Nhà cung cấp, thông tin xác thực và endpoint",
         complete: llmValidated,
         disabled: false,
       },
       {
         id: "baseresume",
-        label: "Resume",
-        subtitle: "Upload a file or use Reactive Resume",
+        label: "CV",
+        subtitle: "Tải lên tệp hoặc dùng Reactive Resume",
         complete: baseResumeValidation.valid,
         disabled: false,
       },
       {
         id: "searchterms",
-        label: "Search terms",
-        subtitle: "Titles to search for",
+        label: "Từ khóa tìm kiếm",
+        subtitle: "Các chức danh công việc cần tìm",
         complete: searchTermsComplete,
         disabled: false,
       },
@@ -370,14 +370,14 @@ export function useOnboardingFlow() {
     const modelValue = values.model.trim();
 
     if (requiresLlmKey && !apiKeyValue && !hasLlmKey) {
-      toast.info("Add your LLM API key to continue");
+      toast.info("Vui lòng thêm khóa API LLM để tiếp tục");
       return null;
     }
 
     const validation = await validateLlm();
 
     if (!validation.valid) {
-      toast.error(validation.message || "LLM validation failed");
+      toast.error(validation.message || "Xác thực LLM thất bại");
       return null;
     }
 
@@ -400,18 +400,18 @@ export function useOnboardingFlow() {
       syncSettingsCache(nextSettings);
       setValue("llmApiKey", "");
       const defaultModel = getDefaultModelForProvider(normalizedProvider);
-      toast.success("LLM provider connected", {
+      toast.success("Đã kết nối nhà cung cấp LLM", {
         description: modelValue
-          ? `Default model: ${modelValue}.`
+          ? `Mô hình mặc định: ${modelValue}.`
           : normalizedProvider === "openai" ||
               normalizedProvider === "gemini" ||
               normalizedProvider === "gemini_cli"
-            ? `Default for ${providerConfig.label}: ${defaultModel}.`
-            : "You can fine-tune models later in Settings.",
+            ? `Mặc định cho ${providerConfig.label}: ${defaultModel}.`
+            : "Bạn có thể tinh chỉnh các mô hình sau trong phần Cài đặt.",
       });
       return nextSettings;
     } catch (error) {
-      showErrorToast(error, "Failed to save LLM settings");
+      showErrorToast(error, "Lưu cài đặt LLM thất bại");
       return null;
     } finally {
       setIsSaving(false);
@@ -441,8 +441,8 @@ export function useOnboardingFlow() {
     });
 
     if (missing.length > 0) {
-      toast.info("Almost there", {
-        description: `Missing: ${missing.join(", ")}`,
+      toast.info("Sắp hoàn tất", {
+        description: `Còn thiếu: ${missing.join(", ")}`,
       });
       return null;
     }
@@ -477,37 +477,39 @@ export function useOnboardingFlow() {
         },
         persistOnSuccess: true,
         getPrecheckMessage: () =>
-          "v5 API key required. Add a v5 API key, then test again.",
+          "Yêu cầu khóa API v5. Vui lòng thêm khóa API v5 rồi thử lại.",
         getValidationErrorMessage: (error: unknown) =>
-          formatUserFacingError(error, "RxResume validation failed"),
+          formatUserFacingError(error, "Xác thực RxResume thất bại"),
         getPersistErrorMessage: (error: unknown) =>
-          formatUserFacingError(error, "Failed to save RxResume credentials"),
+          formatUserFacingError(
+            error,
+            "Lưu thông tin xác thực RxResume thất bại",
+          ),
       });
 
       setRxresumeValidation(toValidationState(result.validation));
       if (!result.validation.valid) {
-        toast.error(result.validation.message || "RxResume validation failed");
+        toast.error(result.validation.message || "Xác thực RxResume thất bại");
         return null;
       }
 
       setValue("rxresumeApiKey", "");
       const resumeValidation = await validateBaseResume();
       if (resumeValidation.valid) {
-        toast.success("Reactive Resume connected");
+        toast.success("Đã kết nối Reactive Resume");
         return nextSettings ?? settings;
       }
 
-      toast.info("Reactive Resume connected", {
+      toast.info("Đã kết nối Reactive Resume", {
         description:
-          resumeValidation.message ||
-          "Choose a template resume to finish this step.",
+          resumeValidation.message || "Chọn một CV mẫu để hoàn thành bước này.",
       });
       return nextSettings ?? settings;
     } catch (error) {
       toast.error(
         error instanceof Error
           ? error.message
-          : "Failed to save RxResume credentials",
+          : "Lưu thông tin xác thực RxResume thất bại",
       );
       return null;
     } finally {
@@ -560,11 +562,11 @@ export function useOnboardingFlow() {
         setSearchTermsStale(false);
 
         if (options?.showToast) {
-          toast.success("Search terms refreshed", {
+          toast.success("Đã làm mới các chức danh tìm kiếm", {
             description:
               result.source === "ai"
-                ? "Job titles were generated from your current resume."
-                : "Job titles were refreshed from a simpler resume-based fallback.",
+                ? "Các chức danh công việc đã được tạo từ CV hiện tại của bạn."
+                : "Các chức danh công việc đã được làm mới từ nguồn dự phòng dựa trên CV.",
           });
         }
 
@@ -602,14 +604,14 @@ export function useOnboardingFlow() {
     try {
       const validation = await validateBaseResume();
       if (!validation.valid) {
-        toast.error(validation.message || "Base resume validation failed");
+        toast.error(validation.message || "Xác thực CV thất bại");
         return null;
       }
 
-      toast.success("Resume source is ready");
+      toast.success("Nguồn CV đã sẵn sàng");
       return settings ?? null;
     } catch (error) {
-      showErrorToast(error, "Failed to validate resume");
+      showErrorToast(error, "Xác thực CV thất bại");
       return null;
     }
   }, [settings, validateBaseResume]);
@@ -622,7 +624,7 @@ export function useOnboardingFlow() {
         const match = /^data:([^;]+);base64,(.+)$/s.exec(dataUrl.trim());
 
         if (!match) {
-          throw new Error("Resume file could not be encoded for upload.");
+          throw new Error("Không thể mã hóa tệp CV để tải lên.");
         }
 
         const document = await api.importDesignResumeFromFile({
@@ -648,21 +650,19 @@ export function useOnboardingFlow() {
 
         const validation = await validateBaseResume();
         if (!validation.valid) {
-          throw new Error(validation.message || "Resume validation failed.");
+          throw new Error(validation.message || "Xác thực CV thất bại.");
         }
 
-        toast.success("Resume uploaded", {
+        toast.success("Đã tải lên CV", {
           description:
             settings?.pdfRenderer?.value === "latex"
-              ? "Your local Resume Studio document is ready."
-              : "Your local Resume Studio document is ready and PDF rendering was switched to LaTeX.",
+              ? "Tài liệu Resume Studio cục bộ của bạn đã sẵn sàng."
+              : "Tài liệu Resume Studio cục bộ của bạn đã sẵn sàng và cơ chế dựng PDF đã được chuyển sang LaTeX.",
         });
         markSearchTermsStale();
       } catch (error) {
         toast.error(
-          error instanceof Error
-            ? error.message
-            : "Failed to import resume file",
+          error instanceof Error ? error.message : "Nhập tệp CV thất bại",
         );
       } finally {
         setIsImportingResume(false);
@@ -682,7 +682,7 @@ export function useOnboardingFlow() {
     const nextTerms = normalizeSearchTerms(getValues().searchTerms);
 
     if (nextTerms.length === 0) {
-      toast.info("Add at least one job title to continue");
+      toast.info("Vui lòng thêm ít nhất một chức danh công việc để tiếp tục");
       return null;
     }
 
@@ -697,10 +697,10 @@ export function useOnboardingFlow() {
       setSearchTermsSaved(true);
       setHasSavedSearchTermsInSession(true);
       setSearchTermsStale(false);
-      toast.success("Search terms saved");
+      toast.success("Đã lưu các từ khóa tìm kiếm");
       return nextSettings;
     } catch (error) {
-      showErrorToast(error, "Failed to save search terms");
+      showErrorToast(error, "Lưu từ khóa tìm kiếm thất bại");
       return null;
     } finally {
       setIsSaving(false);
@@ -735,21 +735,21 @@ export function useOnboardingFlow() {
   const handleConfirmRxresumeTemplate = useCallback(async () => {
     const selectedResumeId = getValues().rxresumeBaseResumeId;
     if (!selectedResumeId) {
-      toast.info("Choose a template resume to continue");
+      toast.info("Vui lòng chọn một CV mẫu để tiếp tục");
       return null;
     }
 
     try {
       const validation = await validateBaseResume();
       if (!validation.valid) {
-        toast.error(validation.message || "Base resume validation failed");
+        toast.error(validation.message || "Xác thực CV thất bại");
         return null;
       }
 
-      toast.success("Resume source is ready");
+      toast.success("Nguồn CV đã sẵn sàng");
       return settings ?? null;
     } catch (error) {
-      showErrorToast(error, "Failed to validate resume");
+      showErrorToast(error, "Xác thực CV thất bại");
       return null;
     }
   }, [getValues, settings, validateBaseResume]);
@@ -809,24 +809,24 @@ export function useOnboardingFlow() {
     currentStep === "llm"
       ? llmValidated
         ? hasPendingLlmChanges
-          ? "Revalidate connection"
-          : "Continue"
-        : "Save connection"
+          ? "Xác thực lại kết nối"
+          : "Tiếp tục"
+        : "Lưu kết nối"
       : currentStep === "baseresume"
         ? resumeSetupMode === "rxresume"
           ? hasRxResumeAccess
             ? baseResumeValue
-              ? "Recheck Reactive Resume"
-              : "Confirm Resume Template"
-            : "Connect Reactive Resume"
+              ? "Kiểm tra lại Reactive Resume"
+              : "Xác nhận CV mẫu"
+            : "Kết nối Reactive Resume"
           : baseResumeValidation.valid
-            ? "Recheck resume"
-            : "Check resume"
+            ? "Kiểm tra lại CV"
+            : "Kiểm tra CV"
         : currentStep === "searchterms"
           ? hasSavedSearchTermsInSession
-            ? "Update search terms"
-            : "Save search terms"
-          : "Continue";
+            ? "Cập nhật từ khóa"
+            : "Lưu từ khóa"
+          : "Tiếp tục";
 
   return {
     baseResumeValidation,
@@ -893,7 +893,7 @@ export function useOnboardingFlow() {
         } catch (error) {
           setBaseResumeId(currentValue);
           setValue("rxresumeBaseResumeId", currentValue);
-          showErrorToast(error, "Failed to save selected resume");
+          showErrorToast(error, "Lưu CV được chọn thất bại");
         } finally {
           setIsSaving(false);
         }

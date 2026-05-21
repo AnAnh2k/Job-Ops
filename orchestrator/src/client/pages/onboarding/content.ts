@@ -16,21 +16,21 @@ export const STEP_COPY: Record<
   }
 > = {
   llm: {
-    eyebrow: "Step 1",
-    title: "Choose the LLM connection Job Ops should use.",
+    eyebrow: "Bước 1",
+    title: "Chọn kết nối LLM (AI) cho JobOps.",
     description:
-      "Pick the provider, confirm the endpoint, and validate the credentials this workspace will use for scoring and tailoring.",
+      "Chọn nhà cung cấp, xác nhận endpoint và xác thực thông tin đăng nhập sẽ dùng để chấm điểm và tinh chỉnh CV.",
   },
   baseresume: {
-    eyebrow: "Step 2",
-    title: "Import your current resume.",
+    eyebrow: "Bước 2",
+    title: "Nhập CV hiện tại của bạn.",
     description:
-      "Choose how to bring your base resume into Job Ops. Upload a PDF, DOCX, or Reactive Resume JSON to create a local Resume Studio document, or connect Reactive Resume with a v5 API key and select an existing resume there.",
+      "Chọn cách đưa CV gốc của bạn vào JobOps. Tải lên tệp PDF, DOCX, hoặc JSON từ Reactive Resume để tạo tài liệu Resume Studio cục bộ, hoặc kết nối Reactive Resume bằng khóa API v5 và chọn CV sẵn có.",
   },
   searchterms: {
-    eyebrow: "Step 3",
-    title: "Choose the job titles to search for.",
+    eyebrow: "Bước 3",
+    title: "Chọn chức danh công việc muốn tìm kiếm.",
     description:
-      "Start from titles generated from your current resume, then edit the list so Job Ops searches for the roles you actually want next.",
+      "Bắt đầu từ các chức danh được đề xuất từ CV của bạn, sau đó chỉnh sửa danh sách để JobOps tìm kiếm chính xác các vai trò bạn mong muốn.",
   },
 };

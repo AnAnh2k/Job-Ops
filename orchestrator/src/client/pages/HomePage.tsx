@@ -107,7 +107,7 @@ export const HomePage: React.FC = () => {
   const error = overviewQuery.error
     ? overviewQuery.error instanceof Error
       ? overviewQuery.error.message
-      : "Failed to load applications"
+      : "Tải thông tin ứng tuyển thất bại"
     : null;
   const isLoading = overviewQuery.isLoading;
 
@@ -134,8 +134,8 @@ export const HomePage: React.FC = () => {
     <>
       <PageHeader
         icon={ChartColumn}
-        title="Overview"
-        subtitle="Analytics & Insights"
+        title="Tổng quan"
+        subtitle="Phân tích & Thống kê"
         actions={
           <DurationSelector value={duration} onChange={handleDurationChange} />
         }

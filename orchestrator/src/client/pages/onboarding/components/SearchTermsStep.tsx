@@ -32,10 +32,11 @@ export const SearchTermsStep: React.FC<{
   <div className="space-y-6">
     <div className="flex flex-wrap items-start justify-between gap-3 rounded-xl border border-border/60 bg-muted/10 p-5">
       <div className="max-w-2xl space-y-1">
-        <div className="text-sm font-medium">Titles to search for</div>
+        <div className="text-sm font-medium">Chức danh tìm kiếm</div>
         <p className="text-sm leading-6 text-muted-foreground">
-          Pick the job titles Job Ops should search for. The first list can be
-          generated from your resume, and you can edit every item before saving.
+          Chọn các chức danh công việc mà JobOps nên tìm kiếm. Danh sách ban đầu
+          có thể được tạo từ CV của bạn và bạn có thể chỉnh sửa mọi mục trước
+          khi lưu.
         </p>
       </div>
       <Button
@@ -45,17 +46,17 @@ export const SearchTermsStep: React.FC<{
         onClick={() => void onRegenerate()}
       >
         <RefreshCcw className="h-4 w-4" />
-        {isGeneratingSearchTerms ? "Generating..." : "Regenerate from resume"}
+        {isGeneratingSearchTerms ? "Đang tạo..." : "Tạo lại từ CV"}
       </Button>
     </div>
 
     {searchTermsStale ? (
       <Alert variant="warning">
         <Info className="h-4 w-4" />
-        <AlertTitle>Resume changed</AlertTitle>
+        <AlertTitle>CV đã thay đổi</AlertTitle>
         <AlertDescription>
-          Your resume source changed after these search terms were generated or
-          saved. Refresh or edit the list, then save it again.
+          Nguồn CV của bạn đã thay đổi sau khi các từ khóa tìm kiếm này được tạo
+          hoặc lưu. Vui lòng làm mới hoặc chỉnh sửa danh sách, sau đó lưu lại.
         </AlertDescription>
       </Alert>
     ) : searchTermsSource ? (
@@ -63,22 +64,22 @@ export const SearchTermsStep: React.FC<{
         <Info className="h-4 w-4" />
         <AlertTitle>
           {searchTermsSource === "ai"
-            ? "Generated from your resume"
-            : "Suggested from your resume"}
+            ? "Được tạo từ CV của bạn"
+            : "Được gợi ý từ CV của bạn"}
         </AlertTitle>
         <AlertDescription>
           {searchTermsSource === "ai"
-            ? "These titles were generated from your current resume. Adjust anything that feels off before saving."
-            : "Job Ops used a simpler resume-based fallback list. You can edit or regenerate it before saving."}
+            ? "Các chức danh này được tạo ra từ CV hiện tại của bạn. Hãy điều chỉnh bất kỳ điều gì chưa phù hợp trước khi lưu."
+            : "JobOps đã sử dụng một danh sách dự phòng đơn giản dựa trên CV. Bạn có thể chỉnh sửa hoặc tạo lại danh sách này trước khi lưu."}
         </AlertDescription>
       </Alert>
     ) : hasSavedSearchTermsInSession ? (
       <Alert>
         <Info className="h-4 w-4" />
-        <AlertTitle>Saved search terms</AlertTitle>
+        <AlertTitle>Từ khóa tìm kiếm đã lưu</AlertTitle>
         <AlertDescription>
-          These titles are already saved and will be used for job discovery
-          unless you update them.
+          Các chức danh này đã được lưu và sẽ được sử dụng để tìm kiếm công việc
+          trừ khi bạn cập nhật chúng.
         </AlertDescription>
       </Alert>
     ) : null}
@@ -90,9 +91,9 @@ export const SearchTermsStep: React.FC<{
       parseInput={parseSearchTermsInput}
       onDraftChange={onSearchTermDraftChange}
       onValuesChange={onSearchTermsChange}
-      placeholder="Type a role and press Enter"
-      helperText="Examples: Platform Engineer, Senior Backend Engineer, Staff Software Engineer"
-      removeLabelPrefix="Remove search term"
+      placeholder="Nhập vai trò và nhấn Enter"
+      helperText="Ví dụ: Platform Engineer, Senior Backend Engineer, Staff Software Engineer"
+      removeLabelPrefix="Xóa từ khóa tìm kiếm"
       disabled={isBusy}
     />
   </div>

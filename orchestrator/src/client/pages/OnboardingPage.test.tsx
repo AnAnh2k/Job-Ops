@@ -213,7 +213,7 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => expect(api.validateLlm).toHaveBeenCalled());
     expect(
-      screen.getByText("Choose the LLM connection Job Ops should use."),
+      screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
     ).toBeInTheDocument();
     expect(screen.getByLabelText("API key")).toBeInTheDocument();
     expect(screen.getByLabelText("Default model")).toBeInTheDocument();
@@ -244,7 +244,7 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Choose the LLM connection Job Ops should use."),
+        screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
       ).toBeInTheDocument();
     });
 
@@ -252,7 +252,7 @@ describe("OnboardingPage", () => {
       target: { value: "google/gemini-3-flash-preview" },
     });
     fireEvent.click(
-      screen.getByRole("button", { name: /revalidate connection/i }),
+      screen.getByRole("button", { name: /xác thực lại kết nối/i }),
     );
 
     await waitFor(() => {
@@ -372,10 +372,10 @@ describe("OnboardingPage", () => {
     });
 
     expect(
-      screen.getByRole("button", { name: /save connection/i }),
+      screen.getByRole("button", { name: /lưu kết nối/i }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /revalidate connection/i }),
+      screen.queryByRole("button", { name: /xác thực lại kết nối/i }),
     ).not.toBeInTheDocument();
   });
 
@@ -397,7 +397,7 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("OpenRouter connection verified."),
+        screen.getByText("Đã xác thực kết nối OpenRouter."),
       ).toBeInTheDocument();
     });
   });
@@ -432,11 +432,11 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: /^continue$/i }),
+        screen.getByRole("button", { name: /^tiếp tục$/i }),
       ).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /^continue$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^tiếp tục$/i }));
 
     await waitFor(() => {
       expect(screen.getByText("ready page")).toBeInTheDocument();
@@ -462,11 +462,11 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("button", { name: /search terms/i }),
+        screen.getByRole("button", { name: /từ khóa tìm kiếm/i }),
       ).toBeInTheDocument();
     });
-    expect(screen.getByRole("button", { name: /llm/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /resume/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /llm \(trí tuệ nhân tạo\)/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /cv/i })).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: /basic auth/i }),
     ).not.toBeInTheDocument();
@@ -500,16 +500,16 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /từ khóa tìm kiếm/i }));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Choose the job titles to search for."),
+        screen.getByText("Chọn chức danh công việc muốn tìm kiếm."),
       ).toBeInTheDocument();
     });
 
     expect(api.suggestOnboardingSearchTerms).not.toHaveBeenCalled();
-    expect(screen.getByText(/saved search terms/i)).toBeInTheDocument();
+    expect(screen.getByText(/từ khóa tìm kiếm đã lưu/i)).toBeInTheDocument();
   });
 
   it("auto-populates search terms from the resume when no explicit override exists", async () => {
@@ -541,14 +541,14 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /từ khóa tìm kiếm/i }));
 
     await waitFor(() => {
       expect(api.suggestOnboardingSearchTerms).toHaveBeenCalledTimes(1);
     });
 
     expect(
-      screen.getByText(/^generated from your resume$/i),
+      screen.getByText(/^được tạo từ cv của bạn$/i),
     ).toBeInTheDocument();
 
     const collapsedTokens = screen.getByTestId(
@@ -606,18 +606,18 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(screen.getByRole("button", { name: /search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /từ khóa tìm kiếm/i }));
 
     await waitFor(() => {
       expect(api.suggestOnboardingSearchTerms).toHaveBeenCalledTimes(1);
     });
 
-    const input = screen.getByPlaceholderText("Type a role and press Enter");
+    const input = screen.getByPlaceholderText("Nhập vai trò và nhấn Enter");
     fireEvent.change(input, {
       target: { value: "Staff Software Engineer" },
     });
     fireEvent.keyDown(input, { key: "Enter", code: "Enter" });
-    fireEvent.click(screen.getByRole("button", { name: /save search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /lưu từ khóa/i }));
 
     await waitFor(() => {
       expect(api.updateSettings).toHaveBeenCalledWith({
@@ -675,17 +675,17 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Choose the LLM connection Job Ops should use."),
+        screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
       ).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /từ khóa tìm kiếm/i }));
 
     await waitFor(() => {
       expect(api.suggestOnboardingSearchTerms).toHaveBeenCalledTimes(1);
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /save search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /lưu từ khóa/i }));
 
     await waitFor(() => {
       expect(screen.getByText("ready page")).toBeInTheDocument();
@@ -722,13 +722,13 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Choose the LLM connection Job Ops should use."),
+        screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
       ).toBeInTheDocument();
     });
 
     expect(screen.queryByText("ready page")).not.toBeInTheDocument();
     expect(
-      screen.getByText("Choose the LLM connection Job Ops should use."),
+      screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
     ).toBeInTheDocument();
   });
 
@@ -749,24 +749,24 @@ describe("OnboardingPage", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Choose the LLM connection Job Ops should use."),
+        screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
       ).toBeInTheDocument();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /^continue$/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^tiếp tục$/i }));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Choose the LLM connection Job Ops should use."),
+        screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
       ).toBeInTheDocument();
     });
     expect(api.updateSettings).not.toHaveBeenCalled();
 
     expect(
-      screen.getByText("Choose the LLM connection Job Ops should use."),
+      screen.getByText("Chọn kết nối LLM (AI) cho JobOps."),
     ).toBeInTheDocument();
     expect(
-      screen.queryByText("Import your current resume."),
+      screen.queryByText("Nhập CV hiện tại của bạn."),
     ).not.toBeInTheDocument();
   });
 
@@ -800,22 +800,22 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
-    fireEvent.click(screen.getByText("Use Reactive Resume"));
+    fireEvent.click(getStepButton(/^CV$/i));
+    fireEvent.click(screen.getByText("Sử dụng Reactive Resume"));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Import your current resume."),
+        screen.getByText("Nhập CV hiện tại của bạn."),
       ).toBeInTheDocument();
     });
 
-    expect(screen.queryByLabelText(/custom url/i)).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText("https://resume.example.com")).not.toBeInTheDocument();
 
     fireEvent.click(
-      screen.getByRole("checkbox", { name: /self-hosted reactive resume/i }),
+      screen.getByRole("checkbox", { name: /tự host reactive resume \(self-hosted\)\?/i }),
     );
 
-    expect(screen.getByLabelText(/custom url/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("https://resume.example.com")).toBeInTheDocument();
   });
 
   it("does not show resume errors before the user tries to validate the step", async () => {
@@ -841,7 +841,7 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     await waitFor(() => {
       expect(api.validateResumeConfig).toHaveBeenCalled();
@@ -854,7 +854,7 @@ describe("OnboardingPage", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByText(
-        /upload a resume here, or switch to the reactive resume option if you want to import from an existing template resume instead\./i,
+        /Hãy tải lên CV tại đây, hoặc chuyển sang tùy chọn Reactive Resume/i,
       ),
     ).not.toBeInTheDocument();
   });
@@ -881,12 +881,12 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
-    fireEvent.click(screen.getByText("Use Reactive Resume"));
+    fireEvent.click(getStepButton(/^CV$/i));
+    fireEvent.click(screen.getByText("Sử dụng Reactive Resume"));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Reactive Resume connection verified."),
+        screen.getByText("Đã xác minh kết nối Reactive Resume."),
       ).toBeInTheDocument();
     });
   });
@@ -907,11 +907,11 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Your base resume is loaded and ready."),
+        screen.getByText("CV gốc của bạn đã được tải và sẵn sàng."),
       ).toBeInTheDocument();
     });
   });
@@ -970,11 +970,11 @@ describe("OnboardingPage", () => {
 
     const { container } = renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Import your current resume."),
+        screen.getByText("Nhập CV hiện tại của bạn."),
       ).toBeInTheDocument();
     });
 
@@ -1051,7 +1051,7 @@ describe("OnboardingPage", () => {
 
     const { container } = renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     const input = container.querySelector(
       'input[type="file"][accept*=".json"]',
@@ -1131,7 +1131,7 @@ describe("OnboardingPage", () => {
 
     const { container } = renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     const input = container.querySelector(
       'input[type="file"][accept*=".pdf"]',
@@ -1154,10 +1154,10 @@ describe("OnboardingPage", () => {
       expect(api.importDesignResumeFromFile).toHaveBeenCalled();
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /search terms/i }));
+    fireEvent.click(screen.getByRole("button", { name: /từ khóa tìm kiếm/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/resume changed/i)).toBeInTheDocument();
+      expect(screen.getByText(/cv đã thay đổi/i)).toBeInTheDocument();
     });
   });
 
@@ -1215,7 +1215,7 @@ describe("OnboardingPage", () => {
 
     const { container } = renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     const input = container.querySelector(
       'input[type="file"][accept*=".pdf"]',
@@ -1287,35 +1287,35 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
-    fireEvent.click(screen.getByText("Use Reactive Resume"));
+    fireEvent.click(getStepButton(/^CV$/i));
+    fireEvent.click(screen.getByText("Sử dụng Reactive Resume"));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Import your current resume."),
+        screen.getByText("Nhập CV hiện tại của bạn."),
       ).toBeInTheDocument();
     });
 
-    expect(screen.queryByText("Template resume")).not.toBeInTheDocument();
+    expect(screen.queryByText("CV mẫu")).not.toBeInTheDocument();
     expect(screen.queryByText("Base resume selection")).not.toBeInTheDocument();
 
-    fireEvent.change(screen.getByPlaceholderText("Enter v5 API key"), {
+    fireEvent.change(screen.getByPlaceholderText("Nhập khóa API v5"), {
       target: { value: "rx-api-key" },
     });
     fireEvent.click(
-      screen.getByRole("button", { name: /connect reactive resume/i }),
+      screen.getByRole("button", { name: /kết nối reactive resume/i }),
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Template resume")).toBeInTheDocument();
+      expect(screen.getByText("CV mẫu")).toBeInTheDocument();
       expect(
-        screen.getByPlaceholderText("Enter v5 API key"),
+        screen.getByPlaceholderText("Nhập khóa API v5"),
       ).toBeInTheDocument();
       expect(
-        screen.queryByText("Upload a PDF or DOCX resume"),
+        screen.queryByText("Tải lên tệp CV của bạn"),
       ).not.toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: /confirm resume template/i }),
+        screen.getByRole("button", { name: /xác nhận cv mẫu/i }),
       ).toBeInTheDocument();
     });
     expect(screen.getByText("Base resume selection")).toBeInTheDocument();
@@ -1351,28 +1351,28 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Search terms$/i));
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^Từ khóa tìm kiếm$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Your base resume is loaded and ready."),
+        screen.getByText("CV gốc của bạn đã được tải và sẵn sàng."),
       ).toBeInTheDocument();
     });
-    expect(screen.getByText("Template resume")).toBeInTheDocument();
+    expect(screen.getByText("CV mẫu")).toBeInTheDocument();
     expect(screen.getByText("Base resume selection")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Enter v5 API key")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Nhập khóa API v5")).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /recheck reactive resume/i }),
+      screen.getByRole("button", { name: /kiểm tra lại reactive resume/i }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /connect reactive resume/i }),
+      screen.queryByRole("button", { name: /kết nối reactive resume/i }),
     ).not.toBeInTheDocument();
 
     vi.mocked(validateAndMaybePersistRxResumeMode).mockClear();
     vi.mocked(api.validateResumeConfig).mockClear();
     fireEvent.click(
-      screen.getByRole("button", { name: /recheck reactive resume/i }),
+      screen.getByRole("button", { name: /kiểm tra lại reactive resume/i }),
     );
 
     await waitFor(() => {
@@ -1423,7 +1423,7 @@ describe("OnboardingPage", () => {
 
     renderPage();
 
-    fireEvent.click(getStepButton(/^Resume$/i));
+    fireEvent.click(getStepButton(/^CV$/i));
     fireEvent.click(screen.getByRole("button", { name: /choose alternate/i }));
 
     await waitFor(() => {
@@ -1433,7 +1433,7 @@ describe("OnboardingPage", () => {
       });
     });
 
-    fireEvent.click(getStepButton(/^Search terms$/i));
+    fireEvent.click(getStepButton(/^Từ khóa tìm kiếm$/i));
 
     await waitFor(() => {
       expect(api.suggestOnboardingSearchTerms).toHaveBeenCalled();

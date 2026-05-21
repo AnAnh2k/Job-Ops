@@ -61,9 +61,10 @@ function getRunReason(
   displayStatus: PipelineRunDisplayStatus,
 ) {
   if (run.errorMessage) return run.errorMessage;
-  if (displayStatus === "cancelled") return "Run cancelled before completion.";
+  if (displayStatus === "cancelled")
+    return "Lần chạy bị hủy trước khi hoàn thành.";
   if (displayStatus === "incomplete") {
-    return "This historical run never recorded a completion timestamp.";
+    return "Lần chạy lịch sử này không ghi nhận mốc thời gian hoàn thành.";
   }
   return null;
 }
@@ -95,12 +96,12 @@ function RunStatusBadge(props: { status: PipelineRunDisplayStatus }) {
 }
 
 function formatSourceList(sources: string[]) {
-  if (sources.length === 0) return "None";
+  if (sources.length === 0) return "Không";
   return sources.join(", ");
 }
 
 function formatToggleState(value: boolean) {
-  return value ? "Enabled" : "Disabled";
+  return value ? "Đã bật" : "Đã tắt";
 }
 
 function formatStageLabel(stage: string) {
@@ -116,10 +117,10 @@ function RunsList(props: {
   return (
     <div className="space-y-2">
       <div className="hidden grid-cols-[minmax(0,1.6fr)_auto_auto_auto] gap-3 px-3 text-xs text-muted-foreground md:grid">
-        <div>Run</div>
-        <div>Status</div>
-        <div>Discovered</div>
-        <div>Processed</div>
+        <div>Lần chạy</div>
+        <div>Trạng thái</div>
+        <div>Tìm thấy</div>
+        <div>Đã xử lý</div>
       </div>
 
       <div className="space-y-2">
@@ -147,11 +148,11 @@ function RunsList(props: {
                     {formatDateTime(run.startedAt) ?? run.startedAt}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    Run {run.id.slice(0, 8)}
+                    Lần chạy {run.id.slice(0, 8)}
                   </span>
                 </div>
                 <div className="mt-1 text-sm text-muted-foreground">
-                  Duration {duration}
+                  Thời gian: {duration}
                 </div>
               </div>
               <div className="md:self-center">
@@ -159,7 +160,7 @@ function RunsList(props: {
               </div>
               <div className="md:self-center md:text-right">
                 <div className="text-xs text-muted-foreground md:hidden">
-                  Discovered
+                  Tìm thấy
                 </div>
                 <div className="font-medium tabular-nums">
                   {run.jobsDiscovered.toLocaleString()}
@@ -167,7 +168,7 @@ function RunsList(props: {
               </div>
               <div className="md:self-center md:text-right">
                 <div className="text-xs text-muted-foreground md:hidden">
-                  Processed
+                  Đã xử lý
                 </div>
                 <div className="font-medium tabular-nums">
                   {run.jobsProcessed.toLocaleString()}
@@ -193,85 +194,85 @@ function RunInsightsBody(props: {
   const runReason = getRunReason(run, displayStatus);
   const inferredHint =
     inferredMetrics.jobsCreated.quality === "unavailable"
-      ? "Unavailable for incomplete runs."
-      : "Approximate counts inferred from job timestamps in the run window. Other job activity in the same period may be included.";
+      ? "Không khả dụng cho các tiến trình chưa hoàn tất."
+      : "Số lượng ước tính được suy luận từ mốc thời gian công việc trong cửa sổ chạy. Các hoạt động công việc khác trong cùng khoảng thời gian có thể được bao gồm.";
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-2">
         <RunStatusBadge status={displayStatus} />
         <span className="text-sm text-muted-foreground">
-          Started {formatDateTime(run.startedAt) ?? run.startedAt}
+          Đã bắt đầu {formatDateTime(run.startedAt) ?? run.startedAt}
         </span>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         <MetricCard
-          label="Duration"
+          label="Thời gian"
           value={formatPipelineDuration(exactMetrics.durationMs)}
         />
         <MetricCard
-          label="Jobs discovered"
+          label="Công việc tìm thấy"
           value={run.jobsDiscovered.toLocaleString()}
         />
         <MetricCard
-          label="Jobs processed"
+          label="Công việc đã xử lý"
           value={run.jobsProcessed.toLocaleString()}
         />
         <MetricCard
-          label="Completed"
-          value={formatDateTime(run.completedAt) ?? "Not recorded"}
+          label="Đã hoàn thành"
+          value={formatDateTime(run.completedAt) ?? "Không được ghi nhận"}
         />
       </div>
 
       {runReason ? (
         <div className="rounded-lg border border-border/60 bg-muted/20 p-3 text-sm">
-          <div className="font-medium">Notes</div>
+          <div className="font-medium">Ghi chú</div>
           <div className="mt-1 text-muted-foreground">{runReason}</div>
         </div>
       ) : null}
 
       <div className="space-y-3">
-        <div className="font-medium">Saved settings</div>
+        <div className="font-medium">Cài đặt đã lưu</div>
         {savedDetails ? (
           <div className="space-y-4">
             <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
-              <div className="text-sm font-medium">Requested run</div>
+              <div className="text-sm font-medium">Yêu cầu chạy</div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <MetricCard
                   label="Top N"
                   value={savedDetails.requestedConfig.topN.toLocaleString()}
                 />
                 <MetricCard
-                  label="Min suitability score"
+                  label="Điểm phù hợp tối thiểu"
                   value={savedDetails.requestedConfig.minSuitabilityScore.toLocaleString()}
                 />
                 <MetricCard
-                  label="Sources"
+                  label="Nguồn tuyển dụng"
                   value={formatSourceList(
                     savedDetails.requestedConfig.sources.map(sourceLabel),
                   )}
                 />
                 <MetricCard
-                  label="Crawling"
+                  label="Thu thập dữ liệu (Crawling)"
                   value={formatToggleState(
                     savedDetails.requestedConfig.enableCrawling,
                   )}
                 />
                 <MetricCard
-                  label="Scoring"
+                  label="Chấm điểm (Scoring)"
                   value={formatToggleState(
                     savedDetails.requestedConfig.enableScoring,
                   )}
                 />
                 <MetricCard
-                  label="Importing"
+                  label="Nhập dữ liệu (Importing)"
                   value={formatToggleState(
                     savedDetails.requestedConfig.enableImporting,
                   )}
                 />
                 <MetricCard
-                  label="Auto tailoring"
+                  label="Tự động tinh chỉnh CV"
                   value={formatToggleState(
                     savedDetails.requestedConfig.enableAutoTailoring,
                   )}
@@ -280,33 +281,33 @@ function RunInsightsBody(props: {
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
-              <div className="text-sm font-medium">Effective settings</div>
+              <div className="text-sm font-medium">Cài đặt hiệu dụng</div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <MetricCard
-                  label="Country"
+                  label="Quốc gia"
                   value={
                     savedDetails.effectiveConfig.countryLabel ??
-                    "Not restricted"
+                    "Không giới hạn"
                   }
                 />
                 <MetricCard
-                  label="Cities"
+                  label="Thành phố"
                   value={
                     savedDetails.effectiveConfig.searchCities.length > 0
                       ? savedDetails.effectiveConfig.searchCities.join(", ")
-                      : "Not restricted"
+                      : "Không giới hạn"
                   }
                 />
                 <MetricCard
-                  label="Workplace types"
+                  label="Hình thức làm việc"
                   value={
                     savedDetails.effectiveConfig.workplaceTypes.length > 0
                       ? savedDetails.effectiveConfig.workplaceTypes.join(", ")
-                      : "Not restricted"
+                      : "Không giới hạn"
                   }
                 />
                 <MetricCard
-                  label="Location matching"
+                  label="Khớp địa điểm"
                   value={`${formatStageLabel(
                     savedDetails.effectiveConfig.locationSearchScope,
                   )}; ${formatStageLabel(
@@ -314,7 +315,7 @@ function RunInsightsBody(props: {
                   )}`}
                 />
                 <MetricCard
-                  label="Compatible sources"
+                  label="Nguồn tương thích"
                   value={formatSourceList(
                     savedDetails.effectiveConfig.compatibleSources.map(
                       sourceLabel,
@@ -322,13 +323,13 @@ function RunInsightsBody(props: {
                   )}
                 />
                 <MetricCard
-                  label="Skipped sources"
+                  label="Nguồn bị bỏ qua"
                   value={
                     savedDetails.effectiveConfig.skippedSources.length > 0
                       ? savedDetails.effectiveConfig.skippedSources
                           .map((entry) => sourceLabel(entry.source))
                           .join(", ")
-                      : "None"
+                      : "Không"
                   }
                   hint={
                     savedDetails.effectiveConfig.skippedSources.length > 0
@@ -339,68 +340,68 @@ function RunInsightsBody(props: {
                   }
                 />
                 <MetricCard
-                  label="Search terms"
+                  label="Từ khóa tìm kiếm"
                   value={savedDetails.effectiveConfig.searchTermsCount.toLocaleString()}
                 />
                 <MetricCard
-                  label="Blocked company filters"
+                  label="Bộ lọc công ty bị chặn"
                   value={savedDetails.effectiveConfig.blockedCompanyKeywordsCount.toLocaleString()}
                 />
                 <MetricCard
-                  label="Auto-skip threshold"
+                  label="Ngưỡng tự động bỏ qua"
                   value={
                     savedDetails.effectiveConfig.autoSkipScoreThreshold == null
-                      ? "Off"
+                      ? "Tắt"
                       : savedDetails.effectiveConfig.autoSkipScoreThreshold.toLocaleString()
                   }
                 />
                 <MetricCard
-                  label="PDF renderer"
+                  label="Cơ chế dựng PDF"
                   value={savedDetails.effectiveConfig.pdfRenderer}
                 />
                 <MetricCard
-                  label="Source limits"
+                  label="Giới hạn nguồn"
                   value={`Indeed ${savedDetails.effectiveConfig.sourceLimits.jobspyResultsWanted}; UK Visa Jobs ${savedDetails.effectiveConfig.sourceLimits.ukvisajobsMaxJobs}`}
                   hint={`Adzuna ${savedDetails.effectiveConfig.sourceLimits.adzunaMaxJobsPerTerm}; Gradcracker ${savedDetails.effectiveConfig.sourceLimits.gradcrackerMaxJobsPerTerm}; startup.jobs ${savedDetails.effectiveConfig.sourceLimits.startupjobsMaxJobsPerTerm}; Jobindex ${savedDetails.effectiveConfig.sourceLimits.jobindexMaxJobsPerTerm}`}
                 />
                 <MetricCard
-                  label="Resume projects"
-                  value={`${savedDetails.effectiveConfig.resumeProjects.maxProjects} max`}
-                  hint={`${savedDetails.effectiveConfig.resumeProjects.lockedProjectCount} locked, ${savedDetails.effectiveConfig.resumeProjects.aiSelectableProjectCount} AI-selectable`}
+                  label="Dự án trong CV"
+                  value={`${savedDetails.effectiveConfig.resumeProjects.maxProjects} tối đa`}
+                  hint={`${savedDetails.effectiveConfig.resumeProjects.lockedProjectCount} đã khóa, ${savedDetails.effectiveConfig.resumeProjects.aiSelectableProjectCount} AI có thể chọn`}
                 />
                 <MetricCard
-                  label="Models"
+                  label="Mô hình"
                   value={savedDetails.effectiveConfig.models.scorer}
-                  hint={`Tailoring ${savedDetails.effectiveConfig.models.tailoring}; project selection ${savedDetails.effectiveConfig.models.projectSelection}`}
+                  hint={`Tinh chỉnh: ${savedDetails.effectiveConfig.models.tailoring}; Chọn dự án: ${savedDetails.effectiveConfig.models.projectSelection}`}
                 />
               </div>
             </div>
 
             <div className="rounded-lg border border-border/60 bg-muted/20 p-3">
-              <div className="text-sm font-medium">Saved execution summary</div>
+              <div className="text-sm font-medium">Tóm tắt thực thi đã lưu</div>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 <MetricCard
-                  label="Last recorded stage"
+                  label="Giai đoạn ghi nhận cuối"
                   value={formatStageLabel(savedDetails.resultSummary.stage)}
                 />
                 <MetricCard
-                  label="Jobs scored"
+                  label="Công việc đã chấm điểm"
                   value={
                     savedDetails.resultSummary.jobsScored == null
-                      ? "Not recorded"
+                      ? "Không được ghi nhận"
                       : savedDetails.resultSummary.jobsScored.toLocaleString()
                   }
                 />
                 <MetricCard
-                  label="Jobs selected"
+                  label="Công việc được chọn"
                   value={
                     savedDetails.resultSummary.jobsSelected == null
-                      ? "Not recorded"
+                      ? "Không được ghi nhận"
                       : savedDetails.resultSummary.jobsSelected.toLocaleString()
                   }
                 />
                 <MetricCard
-                  label="Source errors"
+                  label="Lỗi nguồn dữ liệu"
                   value={savedDetails.resultSummary.sourceErrors.length.toLocaleString()}
                 />
               </div>
@@ -413,39 +414,40 @@ function RunInsightsBody(props: {
           </div>
         ) : (
           <div className="rounded-lg border border-border/60 bg-muted/20 p-3 text-sm text-muted-foreground">
-            Saved run settings are available for newer pipeline runs.
+            Các cài đặt chạy đã lưu khả dụng cho các tiến trình chạy pipeline
+            mới hơn.
           </div>
         )}
       </div>
 
       <div className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <div className="font-medium">What changed</div>
-          <Badge variant="outline">Inferred from timestamps</Badge>
+          <div className="font-medium">Thay đổi</div>
+          <Badge variant="outline">Suy luận từ mốc thời gian</Badge>
         </div>
         <p className="text-sm text-muted-foreground">{inferredHint}</p>
         <div className="grid gap-3 sm:grid-cols-3">
           <MetricCard
-            label="Jobs created"
+            label="Công việc đã tạo"
             value={
               inferredMetrics.jobsCreated.value == null
-                ? "Not available"
+                ? "Không có sẵn"
                 : inferredMetrics.jobsCreated.value.toLocaleString()
             }
           />
           <MetricCard
-            label="Jobs updated"
+            label="Công việc đã cập nhật"
             value={
               inferredMetrics.jobsUpdated.value == null
-                ? "Not available"
+                ? "Không có sẵn"
                 : inferredMetrics.jobsUpdated.value.toLocaleString()
             }
           />
           <MetricCard
-            label="Jobs processed"
+            label="Công việc đã xử lý"
             value={
               inferredMetrics.jobsProcessed.value == null
-                ? "Not available"
+                ? "Không có sẵn"
                 : inferredMetrics.jobsProcessed.value.toLocaleString()
             }
           />
@@ -490,11 +492,11 @@ export const OverviewPipelineRunsSection: React.FC = () => {
       })
     : null;
   const currentStatusText = pipelineStatusQuery.data?.isRunning
-    ? "A pipeline run is currently in progress."
+    ? "Tiến trình chạy pipeline hiện đang được thực hiện."
     : latestRun
       ? (getRunReason(latestRun, currentStatus as PipelineRunDisplayStatus) ??
-        "The most recent pipeline activity is shown below.")
-      : "No pipeline runs recorded yet.";
+        "Hoạt động pipeline gần nhất được hiển thị bên dưới.")
+      : "Chưa ghi nhận tiến trình chạy pipeline nào.";
   const selectedRun = useMemo(
     () =>
       (pipelineRunsQuery.data ?? []).find((run) => run.id === selectedRunId) ??
@@ -521,10 +523,10 @@ export const OverviewPipelineRunsSection: React.FC = () => {
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <History className="h-4 w-4 text-muted-foreground" />
-                <CardTitle>Pipeline runs</CardTitle>
+                <CardTitle>Tiến trình chạy Pipeline</CardTitle>
               </div>
               <CardDescription>
-                Review recent pipeline activity without leaving Overview.
+                Xem các hoạt động gần đây của pipeline ngay tại trang Tổng quan.
               </CardDescription>
             </div>
             {currentStatus ? <RunStatusBadge status={currentStatus} /> : null}
@@ -539,7 +541,7 @@ export const OverviewPipelineRunsSection: React.FC = () => {
           {isLoading && !latestRun && recentRuns.length === 0 ? (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Loading pipeline history…</span>
+              <span>Đang tải lịch sử pipeline…</span>
             </div>
           ) : null}
 
@@ -547,7 +549,7 @@ export const OverviewPipelineRunsSection: React.FC = () => {
             <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive">
               {error instanceof Error
                 ? error.message
-                : "Failed to load pipeline history"}
+                : "Tải lịch sử pipeline thất bại"}
             </div>
           ) : null}
 
@@ -557,12 +559,12 @@ export const OverviewPipelineRunsSection: React.FC = () => {
                 <div className="rounded-lg border border-border/60 bg-muted/20 p-4">
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <Activity className="h-4 w-4 text-muted-foreground" />
-                    <span>Current status</span>
+                    <span>Trạng thái hiện tại</span>
                   </div>
                   {statusError ? (
                     <div className="mt-3 rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-sm text-amber-100">
-                      Live status is temporarily unavailable. Showing the latest
-                      persisted run history.
+                      Trạng thái trực tiếp tạm thời không khả dụng. Đang hiển
+                      thị lịch sử chạy được lưu gần nhất.
                     </div>
                   ) : null}
                   <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -575,7 +577,7 @@ export const OverviewPipelineRunsSection: React.FC = () => {
                   </div>
                   {pipelineStatusQuery.data?.nextScheduledRun ? (
                     <div className="mt-3 text-xs text-muted-foreground">
-                      Next scheduled run{" "}
+                      Lần chạy dự kiến tiếp theo{" "}
                       {formatDateTime(
                         pipelineStatusQuery.data.nextScheduledRun,
                       ) ?? pipelineStatusQuery.data.nextScheduledRun}
@@ -585,21 +587,21 @@ export const OverviewPipelineRunsSection: React.FC = () => {
 
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
                   <MetricCard
-                    label="Last run"
+                    label="Lần chạy cuối"
                     value={
                       formatDateTime(latestRun.startedAt) ?? latestRun.startedAt
                     }
                   />
                   <MetricCard
-                    label="Duration"
+                    label="Thời gian"
                     value={formatPipelineDuration(getDurationMs(latestRun))}
                   />
                   <MetricCard
-                    label="Jobs discovered"
+                    label="Công việc tìm thấy"
                     value={latestRun.jobsDiscovered.toLocaleString()}
                   />
                   <MetricCard
-                    label="Jobs processed"
+                    label="Công việc đã xử lý"
                     value={latestRun.jobsProcessed.toLocaleString()}
                   />
                 </div>
@@ -608,11 +610,11 @@ export const OverviewPipelineRunsSection: React.FC = () => {
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <Clock3 className="h-4 w-4 text-muted-foreground" />
-                  <div className="font-medium">Recent runs</div>
+                  <div className="font-medium">Các lần chạy gần đây</div>
                 </div>
                 {runsError ? (
                   <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-sm text-amber-100">
-                    Recent run history could not be refreshed just now.
+                    Lịch sử các lần chạy gần đây tạm thời chưa thể làm mới.
                   </div>
                 ) : null}
                 <RunsList
@@ -627,10 +629,12 @@ export const OverviewPipelineRunsSection: React.FC = () => {
 
           {!isLoading && !error && !latestRun ? (
             <div className="rounded-lg border border-dashed border-border/60 px-4 py-8 text-center">
-              <div className="font-medium">No pipeline runs yet</div>
+              <div className="font-medium">
+                Chưa có tiến trình chạy pipeline nào
+              </div>
               <div className="mt-1 text-sm text-muted-foreground">
-                Once the pipeline runs, this section will show status, recent
-                history, and inferred changes.
+                Khi pipeline chạy, phần này sẽ hiển thị trạng thái, lịch sử gần
+                đây và các thay đổi được suy luận.
               </div>
             </div>
           ) : null}
@@ -650,15 +654,15 @@ export const OverviewPipelineRunsSection: React.FC = () => {
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
               <GitCompareArrows className="h-4 w-4" />
-              Run details
+              Chi tiết lần chạy
             </SheetTitle>
             <SheetDescription>
               {selectedRun
-                ? `Inspect exact and inferred signals for run ${selectedRun.id.slice(
+                ? `Kiểm tra các tín hiệu chính xác và suy luận cho lần chạy ${selectedRun.id.slice(
                     0,
                     8,
                   )}.`
-                : "Inspect exact and inferred signals for the selected run."}
+                : "Kiểm tra các tín hiệu chính xác và suy luận cho lần chạy được chọn."}
             </SheetDescription>
           </SheetHeader>
 
@@ -666,7 +670,7 @@ export const OverviewPipelineRunsSection: React.FC = () => {
             {runInsightsQuery.isLoading ? (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Loading run details…</span>
+                <span>Đang tải chi tiết lần chạy…</span>
               </div>
             ) : null}
 
@@ -674,7 +678,7 @@ export const OverviewPipelineRunsSection: React.FC = () => {
               <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive">
                 {runInsightsQuery.error instanceof Error
                   ? runInsightsQuery.error.message
-                  : "Failed to load run details"}
+                  : "Tải chi tiết lần chạy thất bại"}
               </div>
             ) : null}
 
@@ -692,10 +696,10 @@ export const OverviewPipelineRunsSection: React.FC = () => {
               <div className="rounded-lg border border-border/60 bg-muted/20 p-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2 font-medium text-foreground">
                   <AlertCircle className="h-4 w-4" />
-                  <span>Run details unavailable</span>
+                  <span>Chi tiết lần chạy không khả dụng</span>
                 </div>
                 <div className="mt-2">
-                  The selected run could not be loaded. Try selecting it again.
+                  Không thể tải lần chạy được chọn. Vui lòng thử chọn lại.
                 </div>
               </div>
             ) : null}

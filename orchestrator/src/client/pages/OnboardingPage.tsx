@@ -34,15 +34,15 @@ export const OnboardingPage: React.FC = () => {
     <>
       <PageHeader
         icon={Sparkles}
-        title="Onboarding"
-        subtitle="Connect your workspace before the pipeline starts running."
+        title="Thiết lập ban đầu"
+        subtitle="Kết nối không gian làm việc của bạn trước khi quy trình bắt đầu chạy."
       />
 
       <PageMain className="space-y-4">
         <div className="grid gap-4 lg:grid-cols-[320px_minmax(0,1fr)]">
           <Card className="border-border/60 bg-card/40 shadow-none">
             <CardHeader className="space-y-3">
-              <CardTitle>Getting started</CardTitle>
+              <CardTitle>Bắt đầu nào</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <OnboardingStepRail
@@ -57,7 +57,7 @@ export const OnboardingPage: React.FC = () => {
           <Card className="border-border/60 bg-card/40 shadow-none">
             {flow.settingsLoading || !flow.currentStep ? (
               <CardContent className="flex min-h-[24rem] items-center justify-center text-sm text-muted-foreground">
-                Loading onboarding...
+                Đang tải thiết lập ban đầu...
               </CardContent>
             ) : (
               <form
@@ -87,8 +87,9 @@ export const OnboardingPage: React.FC = () => {
                       {flow.currentCopy.eyebrow}
                     </Badge>
                     <span>
-                      {flow.steps.filter((step) => step.complete).length} of{" "}
-                      {flow.steps.length} complete
+                      Đã hoàn thành{" "}
+                      {flow.steps.filter((step) => step.complete).length} /{" "}
+                      {flow.steps.length} bước
                     </span>
                   </div>
                   <div className="space-y-2">
@@ -179,7 +180,7 @@ export const OnboardingPage: React.FC = () => {
                     disabled={!flow.canGoBack || flow.isBusy}
                   >
                     <ArrowLeft className="h-4 w-4" />
-                    Back
+                    Quay lại
                   </Button>
 
                   <div className="flex flex-col items-start gap-2 sm:items-end">

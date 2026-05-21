@@ -71,7 +71,7 @@ export const LlmConnectionStep: React.FC<{
       validationSlot={
         <InlineValidation
           state={validation}
-          successMessage={`${providerConfig.label} connection verified.`}
+          successMessage={`Đã xác thực kết nối ${providerConfig.label}.`}
         />
       }
     />

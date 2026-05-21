@@ -37,12 +37,12 @@ export const RxResumeStep: React.FC<{
   <div className="space-y-6">
     <div className="space-y-5">
       <div className="rounded-lg border border-border/60 bg-muted/10 px-4 py-3 text-sm text-muted-foreground">
-        Use Reactive Resume if your current resume already lives there. Once
-        connected, choose one of your existing resumes to import into Job Ops.
+        Sử dụng Reactive Resume nếu CV hiện tại của bạn đã có trên đó. Sau khi
+        kết nối, chọn một trong các CV hiện có của bạn để nhập vào JobOps.
       </div>
 
       <SettingsInput
-        label="v5 API key"
+        label="Khóa API v5"
         inputProps={{
           name: "rxresumeApiKey",
           value: rxresumeApiKey,
@@ -50,10 +50,10 @@ export const RxResumeStep: React.FC<{
             onRxresumeApiKeyChange(event.currentTarget.value),
         }}
         type="password"
-        placeholder="Enter v5 API key"
+        placeholder="Nhập khóa API v5"
         helper={
           rxresumeApiKeyHint
-            ? "Leave blank to keep the saved v5 API key."
+            ? "Để trống để giữ lại khóa API v5 đã lưu."
             : undefined
         }
         disabled={isBusy}
@@ -72,11 +72,11 @@ export const RxResumeStep: React.FC<{
           />
           <div className="space-y-1">
             <div className="text-sm font-medium">
-              Self-hosted Reactive Resume?
+              Tự host Reactive Resume (Self-hosted)?
             </div>
             <p className="text-xs text-muted-foreground">
-              Turn this on only if you run your own instance and need a custom
-              base URL.
+              Bật tùy chọn này nếu bạn tự vận hành một phiên bản Reactive Resume
+              riêng và cần sử dụng URL tùy chỉnh.
             </p>
           </div>
         </label>
@@ -84,7 +84,7 @@ export const RxResumeStep: React.FC<{
 
       {isSelfHosted ? (
         <SettingsInput
-          label="Custom URL"
+          label="URL tùy chỉnh"
           inputProps={{
             name: "rxresumeUrl",
             value: rxresumeUrl,
@@ -92,7 +92,7 @@ export const RxResumeStep: React.FC<{
           }}
           type="url"
           placeholder="https://resume.example.com"
-          helper="Enter the root URL for your self-hosted Reactive Resume instance."
+          helper="Nhập URL gốc cho phiên bản Reactive Resume tự host của bạn."
           disabled={isBusy}
         />
       ) : null}
@@ -100,10 +100,10 @@ export const RxResumeStep: React.FC<{
       {hasRxResumeAccess ? (
         <div className="space-y-3 rounded-lg border border-border/60 bg-background/70 p-4">
           <div className="space-y-1">
-            <div className="text-sm font-medium">Template resume</div>
+            <div className="text-sm font-medium">CV mẫu</div>
             <p className="text-xs text-muted-foreground">
-              Choose the resume Job Ops should treat as your imported base
-              resume for this onboarding step.
+              Chọn CV mà JobOps sẽ dùng làm CV gốc để nhập trong bước thiết lập
+              này.
             </p>
           </div>
           <BaseResumeSelection
@@ -114,8 +114,8 @@ export const RxResumeStep: React.FC<{
           />
           {isResumeReady ? (
             <div className="text-xs text-muted-foreground">
-              You already have a usable resume source, so this selection stays
-              optional.
+              Bạn đã có nguồn CV có thể sử dụng, do đó lựa chọn này là không bắt
+              buộc.
             </div>
           ) : null}
         </div>
@@ -124,7 +124,7 @@ export const RxResumeStep: React.FC<{
 
     <InlineValidation
       state={rxresumeValidation}
-      successMessage="Reactive Resume connection verified."
+      successMessage="Đã xác minh kết nối Reactive Resume."
     />
   </div>
 );
